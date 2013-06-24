@@ -15,7 +15,6 @@
   <title>Where to get N95 masks and Air Purifiers - #FreeMyInternet</title>
 
   <link rel="shortcut icon" href="<?php echo URL::base().'assets/favicon.ico'; ?>">
-  <link rel="stylesheet" href="<?php echo URL::base().'assets/css/normalize.css'; ?>">
   <link rel="stylesheet" href="<?php echo URL::base().'assets/css/style.css'; ?>">
 
   <script src="<?php echo URL::base().'assets/js/modernizr.js'; ?>"></script>
