@@ -1,0 +1,11 @@
+# Backup files
+*~
+.#*
+
+# Cache and log files
+application/cache
+application/logs
+
+# Config files
+application/config/database.php
+.htaccess

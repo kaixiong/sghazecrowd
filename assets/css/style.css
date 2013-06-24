@@ -1,0 +1,74 @@
+body {
+    font: 14px/1.4em Helvetica, Arial, sans-serif;
+    background: black;
+}
+
+#page {
+    color: #333;
+    background: white;
+    margin: 2em auto;
+    width: 800px;
+    padding: 1em;
+}
+
+a {
+    color: #333;
+    text-decoration: none;
+    border-bottom: 1px dotted #333;
+}
+
+a:hover {
+    color: black;
+    text-decoration: underline;
+    border-bottom: none;
+}
+
+p {
+    margin: 0.5em 0;
+}
+
+p.first {
+    margin-top: 0;
+}
+
+p.last {
+    margin-bottom: 0;
+}
+
+header {
+    padding: 1em 0;
+    border-bottom: 1px dotted black;
+}
+
+header h1 {
+    margin: 0;
+}
+
+footer {
+    padding: 1em 0;
+    border-top: 1px dotted black;
+}
+
+#content {
+    padding: 1em 0;
+}
+
+#map-canvas {
+    margin-bottom: 1em;
+}
+
+#copyright {
+    float: left;
+}
+
+#credits {
+    float: right;
+}
+
+.clearfix:after {
+    content: " "; /* Older browsers do not support empty content */
+    visibility: hidden;
+    display: block;
+    height: 0;
+    clear: both;
+}
