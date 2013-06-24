@@ -76,6 +76,11 @@
                 infoWindow = null;
             }
         });
+        google.maps.event.addDomListener(window, "resize", function() {
+            var center = map.getCenter();
+            google.maps.event.trigger(map, "resize");
+            map.setCenter(center);
+        });
 
         $.when(mapLoad).done(function(results) {
             console.log('Database loaded successfully');
