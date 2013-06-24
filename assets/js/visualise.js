@@ -4,6 +4,7 @@
 
         var mapCenter = new google.maps.LatLng(1.357371, 103.819313); // Singapore
         var map, mapOptions, mapLoad;
+        var infoWindow = null;
 
         function escapeHTMLString(string) {
             return $("<div />").text(string).html();
@@ -35,10 +36,6 @@
             if (entry.hasOwnProperty('longitude') && entry.hasOwnProperty('latitude')) {
                 console.log(entry);
 
-                var infoWindow = new google.maps.InfoWindow({
-                    content: renderMarkup(entry)
-                });
-
                 var marker = new google.maps.Marker({
                     position: new google.maps.LatLng(entry.latitude, entry.longitude),
                     map: map,
@@ -46,6 +43,14 @@
                 });
 
                 google.maps.event.addListener(marker, 'click', function() {
+                    if (infoWindow !== null) {
+                        infoWindow.close();
+                    }
+
+                    infoWindow = new google.maps.InfoWindow({
+                        content: renderMarkup(entry)
+                    });
+
                     infoWindow.open(map, marker);
                 });
             }
@@ -65,6 +70,12 @@
 
         console.log('Loading map');
         map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+        google.maps.event.addListener(map, 'click', function() {
+            if (infoWindow !== null) {
+                infoWindow.close();
+                infoWindow = null;
+            }
+        });
 
         $.when(mapLoad).done(function(results) {
             console.log('Database loaded successfully');
