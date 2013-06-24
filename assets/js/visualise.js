@@ -10,27 +10,39 @@
         }
 
         function addMarker(entry) {
+            function renderMarkup(entry) {
+                var markup = '<div id="info-window"><h2>' + escapeHTMLString(entry['shop']) + '</h2>';
+
+                markup +=
+                    '<p>' +
+                    '  <span class="label">Selling:</span> '  + escapeHTMLString(entry['item']) + '<br />' +
+                    '  <span class="label">Address:</span> '  + escapeHTMLString(entry['address']) + '<br />' +
+                    '  <span class="label">Price:</span> '    + escapeHTMLString(entry['price']) + '<br />' +
+                    '  <span class="label">Quantity:</span> ' + escapeHTMLString(entry['quantity']) +
+                    '</p>';
+
+                if (entry['comment']) {
+                    markup += '<p><span class="label">Comment:</span> '  + escapeHTMLString(entry['comment']) + '</p>';
+                }
+
+                markup += '<p><span class="label">Last updated:</span> ' + escapeHTMLString(entry['timestamp']) + '</p>';
+
+                markup += '</div>';
+
+                return markup;
+            }
+
             if (entry.hasOwnProperty('longitude') && entry.hasOwnProperty('latitude')) {
                 console.log(entry);
-                var infoWindowContents =
-                    '<div id="content">' +
-                    '  <h2>' + escapeHTMLString(entry['shop']) + '</h2>' +
-		            '  <p>Time reported: '  + escapeHTMLString(entry['timestamp']) + '<br />' +
-		            '     Selling: '        + escapeHTMLString(entry['item']) + '<br />' +
-		            '     Address: '        + escapeHTMLString(entry['address']) + '<br />' +
-                    '     Price: ' 			+ escapeHTMLString(entry['price']) + '<br />' +
-                    '     Quantity: ' 		+ escapeHTMLString(entry['quantity']) + '<br />' +
-                    '     Comment: ' 		+ escapeHTMLString(entry['comment']) +
-                    '</div>';
 
                 var infoWindow = new google.maps.InfoWindow({
-                    content: infoWindowContents
+                    content: renderMarkup(entry)
                 });
 
                 var marker = new google.maps.Marker({
                     position: new google.maps.LatLng(entry.latitude, entry.longitude),
                     map: map,
-                    title: entry['shop']
+                    title: entry['shop'] // FIXME: Does this need to be escaped?
                 });
 
                 google.maps.event.addListener(marker, 'click', function() {
