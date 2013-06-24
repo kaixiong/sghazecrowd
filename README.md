@@ -1,10 +1,10 @@
 # SGHazeCrowd
 
-Crowd-sourced mapping of available protective equipment stocks against The Haze.
+Crowd-sourced mapping of available stocks of protective equipment against The Haze.
 
 ## Requirements
 
-* HTTP server such as [Apache](http://httpd.apache.org) or [Nginx](http://nginx.org)
+* A HTTP server such as [Apache](http://httpd.apache.org) or [Nginx](http://nginx.org)
 * PHP 5.2.3 and above
 * [SASS](http://sass-lang.com)
 
@@ -12,5 +12,6 @@ Crowd-sourced mapping of available protective equipment stocks against The Haze.
 
 SGHazeCrowd is built on [Kohana 3.3](http://kohanaframework.org), a PHP5 application framework.
 
-application/ contains the SGHazeCrowd application code
-assets/ contains static assets such as images and stylesheets
+Source tree layout:
+* `application/` contains the SGHazeCrowd application code
+* `assets/` contains the accompanying static assets such as images and stylesheets
