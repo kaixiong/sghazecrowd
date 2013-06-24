@@ -5,6 +5,7 @@
 # Cache and log files
 application/cache
 application/logs
+.sass-cache
 
 # Config files
 application/config/database.php
