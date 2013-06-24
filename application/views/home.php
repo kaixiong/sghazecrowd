@@ -29,18 +29,18 @@
   </noscript>
 
   <div id="page">
-    <header class="clearfix">
+    <header>
       <h1>Where to get N95 masks and Air Purifiers</h1>
       <p><em>This is a prototype and is continually being improved. Users interested in helping, please contact us <a href="https://www.facebook.com/FreeMyInternet" target="fmi-facebook">here</em></a></p>
     </header>
 
-    <div id="content" class="clearfix">
+    <div id="content">
       <div id="map-canvas" style="width:800px; height:400px;"></div>
       <p class="first"><em>Map locations are only approximate.</em></p>
       <p class="last">Enter a new location <a target="google-form" href="https://goo.gl/hoYLm">here</a></p>
     </div>
 
-    <footer class="clearfix">
+    <footer>
       <span id="copyright">Copyleft 2013 Chong Kai Xiong and Donaldson Tan</span>
       <span id="credits">Brought to you by #FreeMyInternet</span>
     </footer>
