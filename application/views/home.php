@@ -30,7 +30,7 @@
 
   <div id="page">
     <header>
-      <h1>Where to get N95 masks and Air Purifiers</h1>
+      <h1><a href="<?php echo URL::base(); ?>">Where to get N95 masks and Air Purifiers</a></h1>
       <p><em>This is a prototype and is continually being improved. Users interested in helping, please contact us <a href="https://www.facebook.com/FreeMyInternet" target="fmi-facebook">here</em></a></p>
     </header>
 
