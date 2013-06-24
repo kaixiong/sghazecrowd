@@ -106,6 +106,6 @@ class Parser(object):
 			ID += 1
 		jsonfile.write(jsonblock)	
 
-test = Parser('data_22jun2013.tsv', 'output.json')		
+test = Parser('data_22jun2013.tsv', 'data.json')		
 	
 
