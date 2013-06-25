@@ -1,7 +1,8 @@
 import json, requests, re, os, linecache, types
 
 class CachedLineList(object):
-  def __init__(self, fname):
+	
+	def __init__(self, fname):
 		self.__fname = fname
 		
 	def __getitem__(self, x):
@@ -13,26 +14,34 @@ class CachedLineList(object):
 	def __getslice__(self, start, end):
 		return self[start:end]
 
-class JsonHandler(object):	
-	# A handler generates output. In this case, the output follows the JSON format.
+# A handler generates output. In this case, the output follows the JSON format.
+class JsonHandler(object):
+	
 	def __init__(self, fname):
 		self.__fname = fname
 	
 	def write(self, data):
-		f = open(self.__fname, "a")
-		jsondata = "".join([json.dumps(data), os.linesep])
-		f.write(jsondata)
-		print jsondata
+		print 'start writing json'
+		# assumes data is a list
+		f = open(self.__fname, 'r+')
+		jsondata = json.loads(f.readline())
+		if len(jsondata) > 0:
+			datalst = jsondata + data
+		else:
+			datalst = data
+		f.truncate()
+		f.write(json.dumps(datalst))		
 		f.close()
+		print 'complete writing json'
 	
 	def truncate(size = 0):
-		f = open(self.__fname, "w")
+		f = open(self.__fname, 'w')
 		f.truncate(size)
 		f.close()
 
 	def getLastID():
-		f = open(self.__fname, "r")
-		data = json.loads(f.readline())
+		f = open(self.__fname, 'r')
+		data = json.loads(f.read())
 		ID = len(data)
 		f.close()
 		return ID
@@ -43,69 +52,74 @@ class TsvData(object):
 	def __init__(self, fname):
 		self.__fname = fname
 		self.__cache = CachedLineList(fname)
-		self.__fields = self.__cache[0].strip().split("\t")
+		self.__fields = self.__cache[0].strip().split('\t')
 	
 	def getFields():
 		return self.__fields
 	
 	# ID shall correspond to row number. Returns a dictionary
+	# ID 0 refers to the row that contains the field descriptors.
 	
 	def getValues(self, ID):
-		return dict(zip(["ID"] + self.__fields, [ID] + self.__cache[ID].strip().split("\t")))
-	
-	def getCoordinates(ID):
-		return self.getValues(ID)["lattitude"], self.getValues(ID)["longtitude"]
-	
+		return dict(zip(['ID'] + self.__fields, [ID] + self.__cache[ID].strip().split('\t')))
+		
 	def getLastID(self):
-		f = open(self.__fname, "r")	
-		ID = len(f.readlines()) 
+		f = open(self.__fname, 'r')	
+		ID = len(f.readlines()) - 1 
 		f.close()
 		return ID
 	
 	def read(self, ID):
-		return self.__cache[ID+1]
+		return self.__cache[ID]
 
 class Parser(object):
 
 	def __init__(self, tsvfname, jsonfname):
+		self.__tsvfname = tsvfname
 		self.__tsvfile = TsvData(tsvfname)
-		self.__jsonfile = JsonHandler(jsonfname)
-		if len(open(jsonfname,"r+").readlines()) < 2:
-			self.genesis()
-		else:
-			self.update()
+		self.__jsonfname = jsonfname
+		self.__jsonfile = JsonHandler(jsonfname)		
 
 	def generateCoordinates(self, address):
-		address = re.sub(r'(#[a-zA-Z0-9,/\-]+)', "", address)
+		address = re.sub(r'(#[a-zA-Z0-9,/\-]+)', '', address)
 		url = 'http://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=false' % address
 		r = requests.get(url)
 		if r.json()['status'] == 'OK':
 			lat = float(r.json()['results'][0]['geometry']['location']['lat'])
 			lng = float(r.json()['results'][0]['geometry']['location']['lng'])
 			return lat, lng
-		else:
-			print address
-			raise Exception("Google Map Request Denied")
+		else:	
+			# Raise exception to stop the program. No point running if already hit rate limit.
+			raise Exception(''.join(['Google Map Request Denied for ', address]))
 
 	def genesis(self):
-		self.update(True)
+		if len(open(self.__jsonfname, 'r+').readlines()) == 0 :
+			self.update(True)
+		else:
+			self.update()		
 			
 	def update(self, genesis = False):
 		jsonfile = self.__jsonfile
 		tsvfile = self.__tsvfile
 		jsonblock = []		
 		if genesis == True:
+			jsonfile.truncate()			)
 			ID = 1 
 		else:
 			ID = jsonfile.getLastID() + 1
 		while tsvfile.read(ID):
 			values = tsvfile.getValues(ID)
-			if 'latitude' not in values.keys() or 'longitude' not in values.keys():
+			# if latitude and longitude are not provided in tsvfile, then invoke geocoding
+			if 'latitude' not in values.keys() or 'longitude' not in values.keys() or values['latitude'] == '' or values['longtitude']=='':
 				values['latitude'], values['longitude'] = self.generateCoordinates(values['address'])
+			# if quantity is not provided in tsvfile, then assign one as the default quantity .
+			if 'quantity' not in values.key() or values['quantity'] == '':
+				values['quantity'] = 1
 			jsonblock.append(values)
 			ID += 1
 		jsonfile.write(jsonblock)	
 
-test = Parser('data_22jun2013.tsv', 'data.json')		
+test = Parser('data_22jun2013.tsv', 'data.json')
+test.genesis()
 	
 
