@@ -110,10 +110,10 @@ class Parser(object):
 		while tsvfile.read(ID):
 			values = tsvfile.getValues(ID)
 			# if latitude and longitude are not provided in tsvfile, then invoke geocoding
-			if 'latitude' not in values.keys() or 'longitude' not in values.keys():
+			if 'latitude' not in values.keys() or 'longitude' not in values.keys() or values['latitude] == '' or values['longtitude']=='':
 				values['latitude'], values['longitude'] = self.generateCoordinates(values['address'])
 			# if quantity is not provided in tsvfile, then assign one as the default quantity .
-			if 'quantity' not in values.key():
+			if 'quantity' not in values.key() or values['quantity'] == '':
 				values['quantity'] = 1
 			jsonblock.append(values)
 			ID += 1
