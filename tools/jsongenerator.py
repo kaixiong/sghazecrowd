@@ -58,6 +58,7 @@ class TsvData(object):
 		return self.__fields
 	
 	# ID shall correspond to row number. Returns a dictionary
+	# ID 0 refers to the row that contains the field descriptors.
 	
 	def getValues(self, ID):
 		return dict(zip(['ID'] + self.__fields, [ID] + self.__cache[ID].strip().split('\t')))
