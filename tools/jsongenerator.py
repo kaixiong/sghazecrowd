@@ -63,17 +63,13 @@ class TsvData(object):
 		return ID
 	
 	def read(self, ID):
-		return self.__cache[ID+1]
+		return self.__cache[ID]
 
 class Parser(object):
 
 	def __init__(self, tsvfname, jsonfname):
 		self.__tsvfile = TsvData(tsvfname)
-		self.__jsonfile = JsonHandler(jsonfname)
-		if len(open(jsonfname,"r+").readlines()) < 2:
-			self.genesis()
-		else:
-			self.update()
+		self.__jsonfile = JsonHandler(jsonfname)		
 
 	def generateCoordinates(self, address):
 		address = re.sub(r'(#[a-zA-Z0-9,/\-]+)', "", address)
@@ -83,12 +79,15 @@ class Parser(object):
 			lat = float(r.json()['results'][0]['geometry']['location']['lat'])
 			lng = float(r.json()['results'][0]['geometry']['location']['lng'])
 			return lat, lng
-		else:
-			print address
-			raise Exception("Google Map Request Denied")
+		else:	
+			# Raise exception to stop the program from running. No point running if already hit rate limit.
+			raise Exception("".join(["Google Map Request Denied for ", address]))
 
 	def genesis(self):
-		self.update(True)
+		if len(open(jsonfname,"r+").readlines()) < 2:
+			self.update(True)
+		else:
+			self.update()		
 			
 	def update(self, genesis = False):
 		jsonfile = self.__jsonfile
@@ -100,12 +99,17 @@ class Parser(object):
 			ID = jsonfile.getLastID() + 1
 		while tsvfile.read(ID):
 			values = tsvfile.getValues(ID)
+			# if latitude and longitude are not provided in tsvfile, then invoke geocoding
 			if 'latitude' not in values.keys() or 'longitude' not in values.keys():
 				values['latitude'], values['longitude'] = self.generateCoordinates(values['address'])
+			# if quantity is not provided in tsvfile, then assign one as the default quantity .
+			if 'quantity' not in values.key():
+				values['quantity'] = 1
 			jsonblock.append(values)
 			ID += 1
 		jsonfile.write(jsonblock)	
 
-test = Parser('data_22jun2013.tsv', 'data.json')		
+test = Parser('data_22jun2013.tsv', 'data.json')
+test.genesis()
 	
 
