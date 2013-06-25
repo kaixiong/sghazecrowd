@@ -19,19 +19,19 @@ class JsonHandler(object):
 		self.__fname = fname
 	
 	def write(self, data):
-		f = open(self.__fname, "a")
+		f = open(self.__fname, 'a')
 		jsondata = "".join([json.dumps(data), os.linesep])
 		f.write(jsondata)
 		print jsondata
 		f.close()
 	
 	def truncate(size = 0):
-		f = open(self.__fname, "w")
+		f = open(self.__fname, 'w')
 		f.truncate(size)
 		f.close()
 
 	def getLastID():
-		f = open(self.__fname, "r")
+		f = open(self.__fname, 'r')
 		data = json.loads(f.readline())
 		ID = len(data)
 		f.close()
@@ -43,7 +43,7 @@ class TsvData(object):
 	def __init__(self, fname):
 		self.__fname = fname
 		self.__cache = CachedLineList(fname)
-		self.__fields = self.__cache[0].strip().split("\t")
+		self.__fields = self.__cache[0].strip().split('\t')
 	
 	def getFields():
 		return self.__fields
@@ -51,10 +51,10 @@ class TsvData(object):
 	# ID shall correspond to row number. Returns a dictionary
 	
 	def getValues(self, ID):
-		return dict(zip(["ID"] + self.__fields, [ID] + self.__cache[ID].strip().split("\t")))
+		return dict(zip(['ID'] + self.__fields, [ID] + self.__cache[ID].strip().split('\t')))
 		
 	def getLastID(self):
-		f = open(self.__fname, "r")	
+		f = open(self.__fname, 'r')	
 		ID = len(f.readlines()) 
 		f.close()
 		return ID
@@ -69,7 +69,7 @@ class Parser(object):
 		self.__jsonfile = JsonHandler(jsonfname)		
 
 	def generateCoordinates(self, address):
-		address = re.sub(r'(#[a-zA-Z0-9,/\-]+)', "", address)
+		address = re.sub(r'(#[a-zA-Z0-9,/\-]+)', '', address)
 		url = 'http://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=false' % address
 		r = requests.get(url)
 		if r.json()['status'] == 'OK':
@@ -81,7 +81,7 @@ class Parser(object):
 			raise Exception("".join(["Google Map Request Denied for ", address]))
 
 	def genesis(self):
-		if len(open(jsonfname,"r+").readlines()) == 0 :
+		if len(open(jsonfname, 'r+').readlines()) == 0 :
 			self.update(True)
 		else:
 			self.update()		
