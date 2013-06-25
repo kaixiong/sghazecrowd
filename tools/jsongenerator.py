@@ -30,7 +30,7 @@ class JsonHandler(object):
 		else:
 			datalst = data
 		f.truncate()
-		f.write(json.dunps(datalst))		
+		f.write(json.dumps(datalst))		
 		f.close()
 		print 'complete writing json'
 	
