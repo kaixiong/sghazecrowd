@@ -88,7 +88,7 @@ class Parser(object):
 			lng = float(r.json()['results'][0]['geometry']['location']['lng'])
 			return lat, lng
 		else:	
-			# Raise exception to stop the program from running. No point running if already hit rate limit.
+			# Raise exception to stop the program. No point running if already hit rate limit.
 			raise Exception(''.join(['Google Map Request Denied for ', address]))
 
 	def genesis(self):
