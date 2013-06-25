@@ -52,10 +52,7 @@ class TsvData(object):
 	
 	def getValues(self, ID):
 		return dict(zip(["ID"] + self.__fields, [ID] + self.__cache[ID].strip().split("\t")))
-	
-	def getCoordinates(ID):
-		return self.getValues(ID)["lattitude"], self.getValues(ID)["longtitude"]
-	
+		
 	def getLastID(self):
 		f = open(self.__fname, "r")	
 		ID = len(f.readlines()) 
@@ -84,7 +81,7 @@ class Parser(object):
 			raise Exception("".join(["Google Map Request Denied for ", address]))
 
 	def genesis(self):
-		if len(open(jsonfname,"r+").readlines()) < 2:
+		if len(open(jsonfname,"r+").readlines()) == 0 :
 			self.update(True)
 		else:
 			self.update()		
