@@ -21,11 +21,18 @@ class JsonHandler(object):
 		self.__fname = fname
 	
 	def write(self, data):
-		f = open(self.__fname, 'a')
-		jsondata = ''.join([json.dumps(data), os.linesep])
-		f.write(jsondata)
-		print jsondata
+		print 'start writing json'
+		# assumes data is a list
+		f = open(self.__fname, 'r+')
+		jsondata = json.loads(f.readline())
+		if len(jsondata) > 0:
+			datalst = jsondata + data
+		else:
+			datalst = data
+		f.truncate()
+		f.write(json.dunps(datalst))		
 		f.close()
+		print 'complete writing json'
 	
 	def truncate(size = 0):
 		f = open(self.__fname, 'w')
