@@ -74,7 +74,9 @@ class TsvData(object):
 class Parser(object):
 
 	def __init__(self, tsvfname, jsonfname):
+		self.__tsvfname = tsvfname
 		self.__tsvfile = TsvData(tsvfname)
+		self.__jsonfname = jsonfname
 		self.__jsonfile = JsonHandler(jsonfname)		
 
 	def generateCoordinates(self, address):
@@ -90,7 +92,7 @@ class Parser(object):
 			raise Exception(''.join(['Google Map Request Denied for ', address]))
 
 	def genesis(self):
-		if len(open(jsonfname, 'r+').readlines()) == 0 :
+		if len(open(self.__jsonfname, 'r+').readlines()) == 0 :
 			self.update(True)
 		else:
 			self.update()		
