@@ -1,7 +1,8 @@
 import json, requests, re, os, linecache, types
 
 class CachedLineList(object):
-  def __init__(self, fname):
+	
+	def __init__(self, fname):
 		self.__fname = fname
 		
 	def __getitem__(self, x):
@@ -13,8 +14,9 @@ class CachedLineList(object):
 	def __getslice__(self, start, end):
 		return self[start:end]
 
-class JsonHandler(object):	
-	# A handler generates output. In this case, the output follows the JSON format.
+# A handler generates output. In this case, the output follows the JSON format.
+class JsonHandler(object):
+	
 	def __init__(self, fname):
 		self.__fname = fname
 	
