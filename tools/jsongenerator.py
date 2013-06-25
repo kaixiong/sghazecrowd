@@ -41,7 +41,7 @@ class JsonHandler(object):
 
 	def getLastID():
 		f = open(self.__fname, 'r')
-		data = json.loads(f.readline())
+		data = json.loads(f.read())
 		ID = len(data)
 		f.close()
 		return ID
@@ -64,7 +64,7 @@ class TsvData(object):
 		
 	def getLastID(self):
 		f = open(self.__fname, 'r')	
-		ID = len(f.readlines()) 
+		ID = len(f.readlines()) - 1 
 		f.close()
 		return ID
 	
