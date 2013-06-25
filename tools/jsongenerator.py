@@ -94,6 +94,7 @@ class Parser(object):
 		tsvfile = self.__tsvfile
 		jsonblock = []		
 		if genesis == True:
+			jsonfile.truncate()			)
 			ID = 1 
 		else:
 			ID = jsonfile.getLastID() + 1
