@@ -56,18 +56,21 @@ SGHazeCrowd.Map.prototype = {
             return markup;
         }
 
-        var marker;
+        var marker = null;
 
         if (entry.hasOwnProperty('longitude') && entry.hasOwnProperty('latitude')) {
             // Create marker
             marker = L.marker([entry.latitude, entry.longitude], { title:entry.shop })
                          .addTo(this.map)
+                         .bindPopup(renderMarkup(entry));
 
             // Open info window when marker is clicked
             marker.on('click', function(event) {
-                marker.bindPopup(renderMarkup(entry)).openPopup();
+                marker.openPopup();
             });
         }
+
+        return marker;
     }
 };
 
@@ -84,14 +87,49 @@ SGHazeCrowd.Map.prototype = {
         // Create map
         map = new SGHazeCrowd.Map('map-canvas');
 
-        $.when(dbLoad).done(function(results) {
+        $.when(dbLoad).done(function(entries) {
             console.log('Database loaded successfully');
 
-            // Process data
-            $.each(results, function(index, entry) {
-                // Add marker
-                map.addMarker(entry);
-            });
+            function populateEntryList(entries) {
+                var escape = SGHazeCrowd.Utils.escapeHTMLString;
+
+                var entryList = $('<ul class="entries" />');
+
+                // Create entry list, sorted by latest
+                $.each(entries, function(index, entry) {
+                    $('<li />').attr({ 'data-id': index })
+                               .html('<span class="shop-name">' + escape(entry.shop) + '</span>')
+                               .prependTo(entryList);
+                });
+                entryList.appendTo('#latest-entries');
+
+                // Jump to marker and open popup whenever entry is clicked
+                $('#latest-entries > .entries > li')
+                    .hover(
+                        function() {
+                            $(this).addClass('hover');
+                        },
+                        function() {
+                            $(this).removeClass('hover');
+                        })
+                    .click(function() {
+                        var ID = $(this).attr('data-id');
+                        var marker = entries[ID].marker;
+
+                        if (marker) {
+                            marker.openPopup();
+                        }
+                    });
+            }
+
+            function addMarkers(entries) {
+                $.each(entries, function(index, entry) {
+                    entry.marker = map.addMarker(entry);
+                });
+            }
+
+            addMarkers(entries);
+            populateEntryList(entries);
         }).fail(function() {
             console.log('Failed to load database!');
         });
