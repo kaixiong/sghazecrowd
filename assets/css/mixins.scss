@@ -13,6 +13,14 @@
     border-radius: $radius;
 }
 
+// CSS3 transitions
+@mixin transition($properties) {
+       -moz-transition: $properties;
+    -webkit-transition: $properties;
+         -o-transition: $properties;
+            transition: $properties;
+}
+
 // Micro clearfix (http://nicolasgallagher.com/micro-clearfix-hack/)
 @mixin clearfix {
     &:before,

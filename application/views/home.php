@@ -36,23 +36,20 @@
 
   <div id="page">
     <header>
-      <h1><a href="<?php echo URL::base(); ?>">Find N95 masks and Air Purifiers</a></h1>
-      <p><em>This is a prototype and is continually being improved. Interested contributors, please contact us <a href="https://facebook.com/FreeMyInternet" target="fmi-facebook">here</em></a></p>
+      <h1><a href="<?php echo URL::base(); ?>">Anti-Haze Equipment Hunter <span class="dev-stage">alpha</span></a></h1>
+      <div id="toolbar">
+        <a class="button" target="google-form" href="https://goo.gl/hoYLm"><span class="icon">+</span><span class="caption">Add a Location</span></a>
+      </div>
     </header>
 
-    <div id="content">
-      <div id="map-canvas"></div>
-      <p class="first"><em>Map locations are only approximate.</em></p>
-      <p class="last">Enter a new location <a target="google-form" href="https://goo.gl/hoYLm">here</a></p>
-    </div>
+    <div id="map-canvas"></div>
 
     <div id="sidebar">
       <div id="latest-entries"></div>
     </div>
 
     <footer>
-      <span id="copyright">Copyleft 2013 <a href="https://github.com/kaixiong/sghazecrowd" target="project-page">SGHazeCrowd</a> team</span>
-      <span id="credits">Presented by <a target="fmi-facebook" href="https://facebook.com/FreeMyInternet">#FreeMyInternet</a></span>
+      <span class="copyright">Copyleft 2013 <a href="https://github.com/kaixiong/sghazecrowd" target="project-page">SGHazeCrowd</a></span>
     </footer>
   </div>
 </body>

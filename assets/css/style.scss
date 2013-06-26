@@ -4,90 +4,195 @@
 // Typography
 $font: Helvetica, Arial, sans-serif;
 
+// UI region settings
+$header-height: 50px;
+$sidebar-width: 200px;
+$footer-height: 30px;
+
 body {
     font: 14px/1.4em $font;
-    background: black;
 }
 
 #page {
     @extend .clearfix;
-    @include box-sizing(border-box);
 
-    color: #333;
-    background: white;
-    margin: 2em auto;
-    max-width: 800px;
-    padding: 1em;
+    @include box-sizing(border-box);
+    width: 100%;
+    min-width: 320px;
+    min-height: 240px;
+
+    padding: $header-height 0 $footer-height;
 }
 
 a {
-    color: #333;
     text-decoration: none;
     border-bottom: 1px dotted #333;
 
     &:hover {
-        color: black;
         text-decoration: underline;
         border-bottom: none;
-    }
-}
-
-p {
-    margin: 0.5em 0;
-
-    &.first {
-        margin-top: 0;
-    }
-
-    &.last {
-        margin-bottom: 0;
     }
 }
 
 header {
     @extend .clearfix;
 
-    padding: 1em 0;
-    border-bottom: 1px dotted black;
+    position: fixed;
+    left: 0;
+    top: 0;
+
+    @include box-sizing(border-box);
+    width: 100%;
+    height: $header-height;
+    padding: 0.5em 1em;
+
+    color: white;
+    background: black;
 
     h1 {
+        float: left;
+
         margin: 0;
+        margin-top: 4px;
+        margin-right: 2em;
+
+        font-size: 1.6em;
+        @include transition(font-size 0.2s);
+
         line-height: 1.2em;
 
         a {
+            color: white;
             border: none;
             text-decoration: none;
 
             &:hover {
-                color: #666;
+                color: #ccc;
                 text-decoration: none;
             }
         }
+
+        .dev-stage {
+            color: red;
+            font-size: 0.5em;
+        }
+    }
+}
+
+#toolbar {
+    @extend .clearfix;
+
+    float: left;
+    margin-top: 2px;
+
+    .button {
+        display: block;
+        float: left;
+
+        padding: 0.4em 1em;
+
+        color: white;
+        background: linear-gradient(to bottom, #328aec, #0070ec);
+        @include border-radius(3px);
+        text-shadow: -1px -1px 0 rgba(0,0,0,.2);
+
+        text-decoration: none;
+
+        border: none;
+        border-top: 1px solid #7eb2ec;
+
+        @include transition(border 0.2s);
+        @include transition(background-image 0.5s);
+
+        .icon,
+        .caption {
+            display: inline-block;
+        }
+
+        .caption {
+            margin-left: 0.5em;
+        }
+
+        &:hover {
+            background: linear-gradient(to bottom, #0070ec, #0065d6);
+            border-top: 1px solid #0070ec;
+        }
+    }
+
+    .button + .button {
+        margin-left: 1em;
     }
 }
 
 footer {
     @extend .clearfix;
 
-    padding: 1em 0;
-    border-top: 1px dotted black;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+
+    @include box-sizing(border-box);
+    width: 100%;
+    height: $footer-height;
+
+    padding: 0.5em 1em;
+
+    color: white;
+    background: black;
 
     a {
+        color: white;
         text-decoration: none;
         border: none;
     }
-}
 
-#content {
-    @extend .clearfix;
-
-    padding: 1em 0;
+    .copyright {
+        float: left;
+        font-size: 0.85em;
+    }
 }
 
 #map-canvas {
-    margin-bottom: 1em;
-    width: 100%;
-    height: 400px;
+    position: absolute;
+
+    top: $header-height;
+    bottom: $footer-height;
+    left: 0;
+    right: $sidebar-width;
+}
+
+#sidebar {
+    position: absolute;
+    top: $header-height;
+    bottom: $footer-height;
+    right: 0;
+
+    width: $sidebar-width;
+    overflow-y: scroll;
+
+    #latest-entries {
+        .entries {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+
+            li {
+                display: block;
+                margin: 0;
+                padding: 0.5em;
+                cursor: pointer;
+
+                &.hover {
+                    color: white;
+                    background: black;
+                }
+            }
+
+            li + li {
+                border-top: 1px dotted #ccc;
+            }
+        }
+    }
 }
 
 .leaflet-popup-content {
@@ -102,30 +207,61 @@ footer {
     border: none;
 }
 
-#copyright {
-    float: left;
-    font-size: 0.85em;
-}
 
-#credits {
-    float: right;
-    font-size: 0.85em;
-}
+@media (max-width: 600px) {
+    #map-canvas {
+        right: 0;
+    }
 
-@media (max-height:720px) {
-    #page {
-        margin-top: 0;
-        margin-bottom: 0;
+    #sidebar {
+        display: none;
     }
 }
 
-@media (max-width:420px) {
-     #copyright,
-     #credits {
-         float: left;
-     }
+@media (max-width: 550px) {
+    header {
+        h1 {
+            margin-right: 0;
+        }
+    }
+
+    #toolbar {
+        float: right;
+
+        .button {
+            .caption {
+                 display: none;
+            }
+        }
+    }
 }
 
+@media (max-width: 420px) {
+    header {
+        padding: 0.5em 0.7em;
+
+        h1 {
+            font-size: 1.1em;
+            margin-top: 7px;
+        }
+    }
+
+    footer {
+        padding: 0.5em 0.7em;
+    }
+}
+
+@media (max-height: 320px) {
+    #map-canvas {
+        bottom: 0;
+    }
+
+    footer {
+        display: none;
+    }
+}
+
+// Clearfix
 .clearfix {
     @include clearfix;
 }
