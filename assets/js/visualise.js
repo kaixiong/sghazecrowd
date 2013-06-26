@@ -15,8 +15,6 @@ SGHazeCrowd.Utils = {
 SGHazeCrowd.Map = function(elementID) {
     console.log('Loading map');
 
-    var self = this;
-
     var options = {
         center: new google.maps.LatLng(SGHazeCrowd.settings.mapCenter[0], SGHazeCrowd.settings.mapCenter[1]),
         zoom: SGHazeCrowd.settings.mapZoom,
@@ -32,8 +30,6 @@ SGHazeCrowd.Map = function(elementID) {
 SGHazeCrowd.Map.prototype = {
     // Adds a marker to the map
     addMarker: function(entry) {
-        var self = this;
-
         function renderMarkup(entry) {
             var escape = SGHazeCrowd.Utils.escapeHTMLString;
 
