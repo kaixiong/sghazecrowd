@@ -90,12 +90,16 @@ footer {
     height: 400px;
 }
 
-#info-window {
+.leaflet-popup-content {
     @extend .clearfix;
 
     .label {
         font-weight: bold;
     }
+}
+
+.leaflet-popup-close-button {
+    border: none;
 }
 
 #copyright {

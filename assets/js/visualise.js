@@ -20,26 +20,11 @@ SGHazeCrowd.Map = function(elementID) {
     var options = {
         center: new google.maps.LatLng(SGHazeCrowd.settings.mapCenter[0], SGHazeCrowd.settings.mapCenter[1]),
         zoom: SGHazeCrowd.settings.mapZoom,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 
-    this.map = new google.maps.Map(document.getElementById(elementID), options);
-
-    // Resize map when page dimensions are changed
-    google.maps.event.addDomListener(window, "resize", function() {
-        var center = map.getCenter();
-        google.maps.event.trigger(map, "resize");
-        map.setCenter(center);
-    });
-
-    // Close the info window (if open) whenever user clicks on the map
-    this.infoWindow = null;
-    google.maps.event.addListener(this.map, 'click', function() {
-        if (self.infoWindow !== null) {
-            self.infoWindow.close();
-            self.infoWindow = null;
-        }
-    });
+    this.map = L.map(elementID)
+                   .setView(SGHazeCrowd.settings.mapCenter, SGHazeCrowd.settings.mapZoom)
+                   .addLayer(new L.Google('ROADMAP'));
 
     return this;
 }
@@ -52,7 +37,7 @@ SGHazeCrowd.Map.prototype = {
         function renderMarkup(entry) {
             var escape = SGHazeCrowd.Utils.escapeHTMLString;
 
-            var markup = '<div id="info-window"><h2>' + escape(entry['shop']) + '</h2>';
+            var markup = '<h2>' + escape(entry['shop']) + '</h2>';
 
             markup +=
                 '<p>' +
@@ -68,8 +53,6 @@ SGHazeCrowd.Map.prototype = {
 
             markup += '<p><span class="label">Last updated:</span> ' + escape(entry.timestamp) + '</p>';
 
-            markup += '</div>';
-
             return markup;
         }
 
@@ -77,23 +60,12 @@ SGHazeCrowd.Map.prototype = {
 
         if (entry.hasOwnProperty('longitude') && entry.hasOwnProperty('latitude')) {
             // Create marker
-            marker = new google.maps.Marker({
-                position: new google.maps.LatLng(entry.latitude, entry.longitude),
-                map: this.map,
-                title: entry['shop'] // FIXME: Does this need to be escaped?
-            });
+            marker = L.marker([entry.latitude, entry.longitude], { title:entry.shop })
+                         .addTo(this.map)
 
             // Open info window when marker is clicked
-            google.maps.event.addListener(marker, 'click', function() {
-                if (self.infoWindow !== null) {
-                    self.infoWindow.close();
-                }
-
-                self.infoWindow = new google.maps.InfoWindow({
-                    content: renderMarkup(entry)
-                });
-
-                self.infoWindow.open(self.map, marker);
+            marker.on('click', function(event) {
+                marker.bindPopup(renderMarkup(entry)).openPopup();
             });
         }
     }

@@ -16,10 +16,16 @@
 
   <link rel="shortcut icon" href="<?php echo URL::base().'assets/favicon.ico'; ?>">
   <link rel="stylesheet" href="<?php echo URL::base().'assets/css/style.css'; ?>">
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css">
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.ie.css" />
+  <![endif]-->
 
   <script src="<?php echo URL::base().'assets/js/modernizr.js'; ?>"></script>
   <script src="http://code.jquery.com/jquery-2.0.0.min.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=visualization"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+  <script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
+  <script src="<?php echo URL::Base().'assets/js/leaflet-Google-layer.js'; ?>"></script>
   <script src="<?php echo URL::base().'assets/js/visualise.js'; ?>"></script>
 </head>
 
@@ -38,6 +44,10 @@
       <div id="map-canvas"></div>
       <p class="first"><em>Map locations are only approximate.</em></p>
       <p class="last">Enter a new location <a target="google-form" href="https://goo.gl/hoYLm">here</a></p>
+    </div>
+
+    <div id="sidebar">
+      <div id="latest-entries"></div>
     </div>
 
     <footer>
